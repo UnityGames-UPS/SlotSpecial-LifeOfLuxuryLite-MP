@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -41,7 +42,14 @@ public class UIManager : MonoBehaviour
     [Header("FreeSpins Popup UI References")]
     [SerializeField] private GameObject FreeSpinPopup_Object;
     [SerializeField] private GameObject FSBoard;
+    [SerializeField] private GameObject FSTopBar;
+    [SerializeField] private GameObject FSWinningsBoard;
     [SerializeField] private TMP_Text Free_Text;
+    [SerializeField] private TMP_Text FSTotalWinnnings_Text;
+    [SerializeField] private TMP_Text multiplierNo_Text;
+    [SerializeField] private Image[] TopDiamondImages;
+    [SerializeField] private Transform DummyDiamondDestination_Transform;
+    [SerializeField] private ImageAnimation DiamondImageAnimation;
     [SerializeField] internal TMP_Text FSNoBoard_Text;
 
     [Header("Disconnection Popup UI References")]
@@ -145,6 +153,29 @@ public class UIManager : MonoBehaviour
 
         if (SkipWinAnimation) SkipWinAnimation.onClick.RemoveAllListeners();
         if (SkipWinAnimation) SkipWinAnimation.onClick.AddListener(SkipWin);
+    }
+
+    internal IEnumerator DiamondAnimation(Vector3 StartPosi, int DiamondCount, int multiplier){
+        DiamondImageAnimation.transform.position = StartPosi;
+        DiamondImageAnimation.transform.localScale = Vector3.one;
+        DiamondImageAnimation.StartAnimation();
+        yield return DiamondImageAnimation.transform.DOMove(Vector3.zero, 2f).WaitForCompletion();
+        yield return new WaitForSeconds(0.2f);
+        DiamondImageAnimation.transform.DOScale(0, 3f);
+        yield return DiamondImageAnimation.transform.DOMove(DummyDiamondDestination_Transform.position, 2f).WaitForCompletion();
+        DiamondImageAnimation.StopAnimation();
+        DiamondImageAnimation.transform.localScale = Vector3.zero;
+        if(!TopDiamondImages[^1].gameObject.activeSelf){
+            for(int i = 0;i<DiamondCount;i++){
+                foreach(Image image in TopDiamondImages){
+                    if(!image.gameObject.activeSelf){
+                        image.gameObject.SetActive(true);
+                        break;
+                    }
+                }
+            }
+        }
+        multiplierNo_Text.text = multiplier.ToString();
     }
 
     private void OpenPatable()
@@ -251,16 +282,29 @@ public class UIManager : MonoBehaviour
         });
     }
 
+    internal void ShowFSPayout(){
+        if (WinPopup_Object) WinPopup_Object.SetActive(true);
+    }
+
     internal void FreeSpinBoardToggle(bool toggle)
     {
         if (toggle)
         {
+            foreach(Image i in TopDiamondImages){
+                i.gameObject.SetActive(false);
+            }
             FSNoBoard_Text.text = "Free Spins: \n" + FreeSpins;
             FSBoard.SetActive(toggle);
+            multiplierNo_Text.text = "1";
+            FSTopBar.SetActive(toggle);
+            FSTotalWinnnings_Text.text = "Total Win:\n0.000";
+            FSWinningsBoard.SetActive(toggle);
         }
         else
         {
             FSBoard.SetActive(toggle);
+            FSTopBar.SetActive(toggle);
+            FSWinningsBoard.SetActive(toggle);
         }
     }
 

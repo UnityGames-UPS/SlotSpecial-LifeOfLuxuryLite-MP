@@ -16,8 +16,8 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField] private UIManager _uiManager;
     protected string SocketURI = null;
     protected string TestSocketURI = "http://localhost:5001/";
-    protected string gameID = "SL-LLL";
-    // protected string gameID = "";
+    // protected string gameID = "SL-LLL";
+    protected string gameID = "";
     private SocketManager manager;
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);
@@ -275,7 +275,7 @@ public class SocketIOManager : MonoBehaviour
         message.data = new BetData();
         message.data.currentBet = currBet;
         message.data.spins = 1;
-        message.data.currentLines = 1;
+        message.data.currentLines = 15;
         message.id = "SPIN";
 
         string json = JsonConvert.SerializeObject(message); // Serialize message data to JSON
