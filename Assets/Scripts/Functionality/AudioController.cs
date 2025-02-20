@@ -6,13 +6,17 @@ public class AudioController : MonoBehaviour
     [SerializeField] internal AudioSource audioPlayer_wl;
     [SerializeField] internal AudioSource audioPlayer_button;
     [SerializeField] internal AudioSource audioSpin_button;
+    [SerializeField] private AudioSource bonusBGAudioSource;
+    [SerializeField] private AudioSource diamondSoundAudioSource;
     [SerializeField] private AudioClip[] clips;
+    [SerializeField] private AudioClip diamondAudioClip;
 
     private void Start()
     {
         if (bg_adudio) bg_adudio.Play();
         audioPlayer_button.clip = clips[clips.Length - 1];
         audioSpin_button.clip = clips[clips.Length - 2];
+        diamondSoundAudioSource.clip = diamondAudioClip;
     }
 
     internal void CheckFocusFunction(bool focus, bool IsSpinning)
@@ -35,6 +39,25 @@ public class AudioController : MonoBehaviour
                 StopWLAaudio();
             }
             if (!audioPlayer_button.mute) audioPlayer_button.UnPause();
+        }
+    }
+
+    internal void PlayDiamondAudio(){
+        diamondSoundAudioSource.loop=false;
+        diamondSoundAudioSource.Play();
+    }
+
+    internal void SwitchBGSound(bool isbonus)
+    {
+        if(isbonus)
+        {
+            if (bonusBGAudioSource) bonusBGAudioSource.enabled = true;
+            if (bg_adudio) bg_adudio.enabled = false;
+        }
+        else
+        {
+            if (bonusBGAudioSource) bonusBGAudioSource.enabled = false;
+            if (bg_adudio) bg_adudio.enabled = true;
         }
     }
 
@@ -88,6 +111,7 @@ public class AudioController : MonoBehaviour
         {
             case "bg":
                 bg_adudio.mute = toggle;
+                bonusBGAudioSource.mute = toggle;
                 break;
             case "button":
                 audioPlayer_button.mute = toggle;
@@ -95,6 +119,7 @@ public class AudioController : MonoBehaviour
                 break;
             case "wl":
                 audioPlayer_wl.mute = toggle;
+                diamondSoundAudioSource.mute = toggle;
                 break;
             case "all":
                 audioPlayer_wl.mute = toggle;

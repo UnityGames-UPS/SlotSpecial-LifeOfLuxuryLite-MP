@@ -50,14 +50,14 @@ public class AbtLogo
 public class GameData
 {
     public List<List<string>> Reel { get; set; }
-    public List<List<int>> Lines { get; set; }
+    public List<List<int>> lines { get; set; }
     public List<double> Bets { get; set; }
     public bool canSwitchLines { get; set; }
     public List<int> LinesCount { get; set; }
     public List<int> autoSpin { get; set; }
     public List<List<int>> resultSymbols { get; set; }
     public List<int> linesToEmit { get; set; }
-    public List<List<string>> symbolsToEmit { get; set; }
+    public List<List<int>> symbolsToEmit { get; set; }
     public double WinAmout { get; set; }
     public FreeSpin freeSpin { get; set; }
     public List<string> FinalsymbolsToEmit { get; set; }
@@ -65,14 +65,19 @@ public class GameData
     public double jackpot { get; set; }
     public bool isBonus { get; set; }
     public double BonusStopIndex { get; set; }
-    public bool isDouble { get; set; }
-    public List<WinningCombination> winningCombinations { get; set; }
+    public List<IsDouble> doubleLines { get; set; }
+    public List<DaimondMultiplier> daimondMultipliers { get; set; }
 }
 
-public class WinningCombination
+public class DaimondMultiplier
 {
-    public int symbolId { get; set; }
-    public List<List<int>> positions { get; set; }
+    public List<int> range { get; set; }
+    public int multiplier { get; set; }
+}
+
+public class IsDouble
+{
+    public int index { get; set; }
     public double payout { get; set; }
 }
 
@@ -81,6 +86,9 @@ public class FreeSpin
 {
     public bool isFreeSpin { get; set; }
     public int freeSpinCount { get; set; }
+    public int freeSpinMultiplier { get; set; }
+    public int diamondCount { get; set; }
+    public double payout { get; set; }
 }
 
 [Serializable]
