@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -47,9 +48,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text Free_Text;
     [SerializeField] private TMP_Text FSTotalWinnnings_Text;
     [SerializeField] private TMP_Text multiplierNo_Text;
-    [SerializeField] private Image[] TopDiamondImages;
+    [SerializeField] private GameObject[] TopDiamondImages;
     [SerializeField] private Transform DummyDiamondDestination_Transform;
     [SerializeField] private ImageAnimation DiamondImageAnimation;
+    [SerializeField] private GameObject FSPayoutTitle_Text;
     [SerializeField] internal TMP_Text FSNoBoard_Text;
 
     [Header("Disconnection Popup UI References")]
@@ -95,7 +97,7 @@ public class UIManager : MonoBehaviour
         if (_audioController) _audioController.ToggleMute(false);
 
         if (Paytable_Button) Paytable_Button.onClick.RemoveAllListeners();
-        if (Paytable_Button) Paytable_Button.onClick.AddListener(delegate { OpenPatable(); });
+        if (Paytable_Button) Paytable_Button.onClick.AddListener(delegate { OpenPaytable(); });
 
         if (PaytableExit_Button) PaytableExit_Button.onClick.RemoveAllListeners();
         if (PaytableExit_Button) PaytableExit_Button.onClick.AddListener(delegate { ClosePopup(PaytablePopup_Object); });
@@ -156,29 +158,34 @@ public class UIManager : MonoBehaviour
     }
 
     internal IEnumerator DiamondAnimation(Vector3 StartPosi, int DiamondCount, int multiplier){
+        Vector3 midPosi=DiamondImageAnimation.transform.position;
         DiamondImageAnimation.transform.position = StartPosi;
         DiamondImageAnimation.transform.localScale = Vector3.one;
+        _audioController.PlayDiamondAudio();
         DiamondImageAnimation.StartAnimation();
-        yield return DiamondImageAnimation.transform.DOMove(Vector3.zero, 2f).WaitForCompletion();
+        yield return DiamondImageAnimation.transform.DOMove(midPosi, 1f).WaitForCompletion();
         yield return new WaitForSeconds(0.2f);
-        DiamondImageAnimation.transform.DOScale(0, 3f);
-        yield return DiamondImageAnimation.transform.DOMove(DummyDiamondDestination_Transform.position, 2f).WaitForCompletion();
+        DiamondImageAnimation.transform.DOScale(0, 1f);
+        yield return DiamondImageAnimation.transform.DOMove(DummyDiamondDestination_Transform.position, 1f).WaitForCompletion();
         DiamondImageAnimation.StopAnimation();
         DiamondImageAnimation.transform.localScale = Vector3.zero;
-        if(!TopDiamondImages[^1].gameObject.activeSelf){
-            for(int i = 0;i<DiamondCount;i++){
-                foreach(Image image in TopDiamondImages){
-                    if(!image.gameObject.activeSelf){
-                        image.gameObject.SetActive(true);
-                        break;
-                    }
-                }
+        DiamondImageAnimation.transform.position=midPosi;
+        foreach(GameObject go in TopDiamondImages){
+            go.SetActive(false);
+        }
+        for(int i=0;i<TopDiamondImages.Length;i++){
+            if(DiamondCount!=0){
+                DiamondCount--;
+                TopDiamondImages[i].SetActive(true);
+            }
+            else{
+                break;
             }
         }
         multiplierNo_Text.text = multiplier.ToString();
     }
 
-    private void OpenPatable()
+    private void OpenPaytable()
     {
         _audioController.PlayButtonAudio();
         foreach (GameObject gameObject in Pages)
@@ -257,6 +264,7 @@ public class UIManager : MonoBehaviour
         StartPopupAnim(amount);
     }
 
+
     private void StartFreeSpins(int spins)
     {
         FreeSpinPopup_Object.transform.GetChild(0).transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).onComplete = () =>
@@ -282,16 +290,12 @@ public class UIManager : MonoBehaviour
         });
     }
 
-    internal void ShowFSPayout(){
-        if (WinPopup_Object) WinPopup_Object.SetActive(true);
-    }
-
     internal void FreeSpinBoardToggle(bool toggle)
     {
         if (toggle)
         {
-            foreach(Image i in TopDiamondImages){
-                i.gameObject.SetActive(false);
+            foreach(GameObject i in TopDiamondImages){
+                i.SetActive(false);
             }
             FSNoBoard_Text.text = "Free Spins: \n" + FreeSpins;
             FSBoard.SetActive(toggle);
@@ -337,6 +341,22 @@ public class UIManager : MonoBehaviour
         EndPopupAnim();
     }
 
+    internal void OpenFSTotalWin(double amount){
+        double initAmount=0;
+        WinPopupParent.localScale = Vector3.zero;
+        FSPayoutTitle_Text.SetActive(true);
+        if (WinPopup_Object) WinPopup_Object.SetActive(true);
+        WinImageScaleTween = WinPopupParent.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+        WinPopupTextTween = DOTween.To(() => initAmount, (val) => initAmount = val, amount, 1.5f).OnUpdate(() =>
+        {
+            if (Win_Text) Win_Text.text = initAmount.ToString("F3");
+        });
+        ClosePopupTween = DOVirtual.DelayedCall(2f, () =>
+        {
+            SkipWin();
+        });
+    }
+
     private void StartPopupAnim(double amount)
     {
         double initAmount = 0;
@@ -345,12 +365,12 @@ public class UIManager : MonoBehaviour
         if (Win_Image) Win_Image.gameObject.SetActive(true);
         if (WinPopup_Object) WinPopup_Object.SetActive(true);
         WinImageScaleTween = WinPopupParent.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
-        WinPopupTextTween = DOTween.To(() => initAmount, (val) => initAmount = val, amount, 2f).OnUpdate(() =>
+        WinPopupTextTween = DOTween.To(() => initAmount, (val) => initAmount = val, amount, 1.5f).OnUpdate(() =>
         {
             if (Win_Text) Win_Text.text = initAmount.ToString("F3");
         });
 
-        ClosePopupTween = DOVirtual.DelayedCall(4f, () =>
+        ClosePopupTween = DOVirtual.DelayedCall(2f, () =>
         {
             SkipWin();
         });
@@ -362,6 +382,7 @@ public class UIManager : MonoBehaviour
         .SetEase(Ease.InBack)
         .OnComplete(() =>
         {
+            FSPayoutTitle_Text.SetActive(false);
             if (Win_Image) Win_Image.gameObject.SetActive(false);
             Win_Image = null;
             if (WinPopup_Object) WinPopup_Object.SetActive(false);

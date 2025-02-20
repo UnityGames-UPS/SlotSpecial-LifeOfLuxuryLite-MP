@@ -16,8 +16,8 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField] private UIManager _uiManager;
     protected string SocketURI = null;
     protected string TestSocketURI = "http://localhost:5001/";
-    // protected string gameID = "SL-LLL";
-    protected string gameID = "";
+    protected string gameID = "SL-LLL";
+    // protected string gameID = "";
     private SocketManager manager;
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);

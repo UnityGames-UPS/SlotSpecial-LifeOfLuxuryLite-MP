@@ -8,7 +8,7 @@ public class PaylineButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     [SerializeField] private SlotBehaviour slotManager;
 	[SerializeField] private int num;
-    // [SerializeField] private TMP_Text my_Text;
+    [SerializeField] internal TMP_Text my_Text;
     [SerializeField] private Button my_Button;
 
     private void Awake() {
@@ -16,7 +16,7 @@ public class PaylineButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             Debug.LogError("Error: PaylineButton.cs: Awake(): num is not a number");
         }
-        // my_Text=transform.GetChild(0).GetComponent<TMP_Text>();
+        my_Text=transform.GetChild(0).GetComponent<TMP_Text>();
         my_Button=GetComponent<Button>();
     }
 
