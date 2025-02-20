@@ -3,7 +3,6 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-using System.Linq;
 
 public class UIManager : MonoBehaviour
 {

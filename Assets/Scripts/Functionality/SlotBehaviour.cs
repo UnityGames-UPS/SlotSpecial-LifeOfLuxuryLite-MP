@@ -5,9 +5,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
-using System.Linq;
-using Best.SocketIO;
-using Unity.VisualScripting;
 
 public class SlotBehaviour : MonoBehaviour
 {
