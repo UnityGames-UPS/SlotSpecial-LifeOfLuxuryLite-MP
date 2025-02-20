@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text[] SymbolsText;
     [SerializeField] private TMP_Text FreeSpin_Text;
     [SerializeField] private TMP_Text Scatter_Text;
+    [SerializeField] private TMP_Text numberOfDiamonds_Text;
+    [SerializeField] private TMP_Text multiplier_Text;
 
     [Header("Sound/Music UI References")]
     [SerializeField] private Button Sound_Button;
@@ -430,6 +432,14 @@ public class UIManager : MonoBehaviour
             {
                 if (Scatter_Text) Scatter_Text.text = paylines.symbols[i].description.ToString();
             }
+        }
+
+        for(int i=0;i<_socketManager.initialData.daimondMultipliers.Count;i++){
+            DaimondMultiplier DM = _socketManager.initialData.daimondMultipliers[i];
+            numberOfDiamonds_Text.text += DM.range[0].ToString()+"-"+DM.range[1].ToString();
+            numberOfDiamonds_Text.text += "\n";
+            multiplier_Text.text +=  DM.multiplier.ToString();
+            multiplier_Text.text +=  "\n";
         }
     }
 

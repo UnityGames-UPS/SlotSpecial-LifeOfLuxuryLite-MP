@@ -66,6 +66,13 @@ public class GameData
     public bool isBonus { get; set; }
     public double BonusStopIndex { get; set; }
     public List<IsDouble> doubleLines { get; set; }
+    public List<DaimondMultiplier> daimondMultipliers { get; set; }
+}
+
+public class DaimondMultiplier
+{
+    public List<int> range { get; set; }
+    public int multiplier { get; set; }
 }
 
 public class IsDouble
