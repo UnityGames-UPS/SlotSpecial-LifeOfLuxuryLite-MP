@@ -233,12 +233,12 @@ public class SlotBehaviour : MonoBehaviour
         _uiManager.FreeSpinBoardToggle(false);
         if(_socketManager.playerdata.currentWining>0){
             if (_totalWinText) _totalWinText.text = _socketManager.playerdata.currentWining.ToString("F3");
+            _checkPopups=true;
             _uiManager.OpenFSTotalWin(_socketManager.playerdata.currentWining);
+            yield return new WaitUntil(()=> !_checkPopups);
         }
         if (_wasAutoSpinOn){
-            _checkPopups=true;
-            yield return new WaitUntil(()=> !_checkPopups);
-            yield return new WaitForSeconds(1f);
+            // yield return new WaitForSeconds(1f);
             _wasAutoSpinOn=false;
             AutoSpin();
         }
@@ -432,18 +432,6 @@ public class SlotBehaviour : MonoBehaviour
         KillAllTweens();
         shuffleSlotImages(true);
 
-        if (_socketManager.playerdata.currentWining > 0)
-        {
-            _bottomBarText.text = "YOU WON: " + _socketManager.playerdata.currentWining.ToString("F3");
-            _spinDelay = 1.2f;
-        }
-        else
-        {
-            _bottomBarText.text = "CLICK PLAY TO START!";
-            _spinDelay = 0.2f;
-        }
-        if (_totalWinText) _totalWinText.text = _socketManager.playerdata.currentWining.ToString("F3");
-
         if(_socketManager.resultData.freeSpin.diamondCount != diamondCount && _isFreeSpin){
             bool found=false;
             for(int i=0;i<_resultImages.Count;i++){
@@ -467,9 +455,6 @@ public class SlotBehaviour : MonoBehaviour
             diamondCount=_socketManager.resultData.freeSpin.diamondCount;
             freeSpinMultiplier=_socketManager.resultData.freeSpin.freeSpinMultiplier;
         }
-
-        _balanceTween?.Kill();
-        if (_balanceText) _balanceText.text = _socketManager.playerdata.Balance.ToString("F3");
 
         if (_socketManager.resultData.linesToEmit.Count > 0)
         {
@@ -524,6 +509,20 @@ public class SlotBehaviour : MonoBehaviour
             FSpayout = _socketManager.resultData.freeSpin.payout;
             _uiManager.FreeSpinProcess((int)_socketManager.resultData.freeSpin.freeSpinCount);
         }
+
+        if (_socketManager.playerdata.currentWining > 0)
+        {
+            _bottomBarText.text = "YOU WON: " + _socketManager.playerdata.currentWining.ToString("F3");
+            _spinDelay = 1.2f;
+        }
+        else
+        {
+            _bottomBarText.text = "CLICK PLAY TO START!";
+            _spinDelay = 0.2f;
+        }
+        if (_totalWinText) _totalWinText.text = _socketManager.playerdata.currentWining.ToString("F3");
+        _balanceTween?.Kill();
+        if (_balanceText) _balanceText.text = _socketManager.playerdata.Balance.ToString("F3");
 
         if (!_isAutoSpin && !_isFreeSpin)
         {
