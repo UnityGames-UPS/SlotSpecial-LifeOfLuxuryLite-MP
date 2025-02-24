@@ -5319,8 +5319,8 @@ MonoBehaviour:
   FSTotalWinnnings_Text: {fileID: 550658954}
   multiplierNo_Text: {fileID: 1407301134}
   TopDiamondImages:
-  - {fileID: 1386632448}
   - {fileID: 1583711348}
+  - {fileID: 1386632448}
   - {fileID: 862425019}
   - {fileID: 1102199570}
   - {fileID: 2112758820}
@@ -6221,7 +6221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c6dee67c9fb64b7bbed44da112a7af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzM5ODU0ODk4LCJleHAiOjE3NDA0NTk2OTh9.BklVzWzKC-tW6NyFUfS2_gFtgFkWDSr162Vs9bQ4JEk
+  _testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQwMzgyMzI4LCJleHAiOjE3NDA5ODcxMjh9.yshJFBlJa-lk9Tc_dcedUG0B1YGXP1aeVyGnBrIi3Z8
   _slotBehaviour: {fileID: 2046803210}
   _uiManager: {fileID: 377874625}
 --- !u!1 &505297408
