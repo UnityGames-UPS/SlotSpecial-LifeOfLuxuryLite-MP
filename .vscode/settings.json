@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "SlotMP-LifeOfLuxuryLite.sln"
+    "dotnet.defaultSolution": "SlotSpecial-LifeOfLuxuryLite-MP.sln"
 }
