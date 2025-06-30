@@ -146,6 +146,7 @@ public class SocketIOManager : MonoBehaviour
   private void OnDisconnected(string response)
   {
     Debug.Log("Socket Disconnected!");
+    _slotBehaviour.SocketConnected = false;
     StopAllCoroutines();
     _uiManager.DisconnectionPopup();
   }
@@ -218,9 +219,11 @@ public class SocketIOManager : MonoBehaviour
     StartCoroutine(WaitAndExit());
   }
 
-  IEnumerator WaitAndExit(){
+  IEnumerator WaitAndExit()
+  {
     yield return new WaitForSeconds(2f);
-    if(!exited){
+    if (!exited)
+    {
       exited = true;
 #if UNITY_WEBGL && !UNITY_EDITOR
       JSManager.SendCustomMessage("onExit");
@@ -247,6 +250,7 @@ public class SocketIOManager : MonoBehaviour
           {
             SetInit = true;
             PopulateSlotGame();
+            _slotBehaviour.SocketConnected = true;
           }
           else
           {
@@ -272,7 +276,7 @@ public class SocketIOManager : MonoBehaviour
 #if UNITY_WEBGL && !UNITY_EDITOR
           JSManager.SendCustomMessage("onExit");
 #endif
-          exited=true;
+          exited = true;
           break;
         }
     }

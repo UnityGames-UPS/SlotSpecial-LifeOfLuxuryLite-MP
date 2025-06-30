@@ -50,6 +50,7 @@ public class SlotBehaviour : MonoBehaviour
 
     [Header("Auto spin setting")]
 
+    internal bool SocketConnected = false;
     internal bool _isAutoSpin = false;
     internal bool _checkPopups = false;
 
