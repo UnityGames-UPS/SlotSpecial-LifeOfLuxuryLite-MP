@@ -8680,7 +8680,7 @@ GameObject:
   - component: {fileID: 675335794}
   - component: {fileID: 675335793}
   m_Layer: 0
-  m_Name: OrientationChange
+  m_Name: OC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
