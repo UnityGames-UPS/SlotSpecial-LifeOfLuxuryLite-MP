@@ -158,8 +158,9 @@ public class UIManager : MonoBehaviour
         if (SkipWinAnimation) SkipWinAnimation.onClick.AddListener(SkipWin);
     }
 
-    internal IEnumerator DiamondAnimation(Vector3 StartPosi, int DiamondCount, int multiplier){
-        Vector3 midPosi=DiamondImageAnimation.transform.position;
+    internal IEnumerator DiamondAnimation(Vector3 StartPosi, int DiamondCount, int multiplier)
+    {
+        Vector3 midPosi = DiamondImageAnimation.transform.position;
         DiamondImageAnimation.transform.position = StartPosi;
         DiamondImageAnimation.transform.localScale = Vector3.one;
         _audioController.PlayDiamondAudio();
@@ -170,16 +171,20 @@ public class UIManager : MonoBehaviour
         yield return DiamondImageAnimation.transform.DOMove(DummyDiamondDestination_Transform.position, 1f).WaitForCompletion();
         DiamondImageAnimation.StopAnimation();
         DiamondImageAnimation.transform.localScale = Vector3.zero;
-        DiamondImageAnimation.transform.position=midPosi;
-        foreach(GameObject go in TopDiamondImages){
+        DiamondImageAnimation.transform.position = midPosi;
+        foreach (GameObject go in TopDiamondImages)
+        {
             go.SetActive(false);
         }
-        for(int i=0;i<TopDiamondImages.Length;i++){
-            if(DiamondCount!=0){
+        for (int i = 0; i < TopDiamondImages.Length; i++)
+        {
+            if (DiamondCount != 0)
+            {
                 DiamondCount--;
                 TopDiamondImages[i].SetActive(true);
             }
-            else{
+            else
+            {
                 break;
             }
         }
@@ -277,8 +282,11 @@ public class UIManager : MonoBehaviour
 
     internal void FreeSpinProcess(int spins)
     {
-        int ExtraSpins = spins - FreeSpins;
-        FreeSpins = spins;
+        // int ExtraSpins = spins - FreeSpins;
+        // FreeSpins = spins;
+        FreeSpins = _slotBehaviour.freeSpinCount;
+        int ExtraSpins = _socketManager.resultData.freeSpinCount;
+        FreeSpins += spins;
 
         if (Free_Text) Free_Text.text = ExtraSpins.ToString() + " Free spins awarded.";
         FreeSpinPopup_Object.transform.GetChild(0).transform.localScale = Vector3.zero;
@@ -287,7 +295,8 @@ public class UIManager : MonoBehaviour
 
         DOVirtual.DelayedCall(2f, () =>
         {
-            StartFreeSpins(spins);
+            // StartFreeSpins(spins);
+            StartFreeSpins(FreeSpins);
         });
     }
 
@@ -295,14 +304,15 @@ public class UIManager : MonoBehaviour
     {
         if (toggle)
         {
-            foreach(GameObject i in TopDiamondImages){
+            foreach (GameObject i in TopDiamondImages)
+            {
                 i.SetActive(false);
             }
             FSNoBoard_Text.text = "Free Spins: \n" + FreeSpins;
             FSBoard.SetActive(toggle);
-            multiplierNo_Text.text = "1";
+            multiplierNo_Text.text = "1";          ///
             FSTopBar.SetActive(toggle);
-            FSTotalWinnnings_Text.text = "Total Win:\n0.000";
+            FSTotalWinnnings_Text.text = "Total Win:\n 0 ";
             FSWinningsBoard.SetActive(toggle);
         }
         else
@@ -325,7 +335,7 @@ public class UIManager : MonoBehaviour
         {
             WinPopupTextTween.Kill();
             WinPopupTextTween = null;
-            Win_Text.text = _socketManager.playerdata.currentWining.ToString("F3");
+            // Win_Text.text = _socketManager.resultData.payload.winAmount.ToString("F3");
         }
 
         if (WinImageScaleTween != null)
@@ -342,8 +352,9 @@ public class UIManager : MonoBehaviour
         EndPopupAnim();
     }
 
-    internal void OpenFSTotalWin(double amount){
-        double initAmount=0;
+    internal void OpenFSTotalWin(double amount)
+    {
+        double initAmount = 0;
         WinPopupParent.localScale = Vector3.zero;
         FSPayoutTitle_Text.SetActive(true);
         if (WinPopup_Object) WinPopup_Object.SetActive(true);
@@ -405,40 +416,43 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < SymbolsText.Length; i++)
         {
-            string text = null;
-            if (paylines.symbols[i].Multiplier[0][0] != 0)
+            string text = "";
+            double betperline = _socketManager.initialData.bets[_slotBehaviour._betCounter];
+
+            if (paylines.symbols[i].multiplier[0] != 0)
             {
-                text += "5x - " + paylines.symbols[i].Multiplier[0][0] + "x";
+                text += "5x - " + paylines.symbols[i].multiplier[0] * betperline;
             }
-            if (paylines.symbols[i].Multiplier[1][0] != 0)
+            if (paylines.symbols[i].multiplier[1] != 0)
             {
-                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0] + "x";
+                text += "\n4x - " + paylines.symbols[i].multiplier[1] * betperline;
             }
-            if (paylines.symbols[i].Multiplier[2][0] != 0)
+            if (paylines.symbols[i].multiplier[2] != 0)
             {
-                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0] + "x";
+                text += "\n3x - " + paylines.symbols[i].multiplier[2]* betperline;
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
 
         for (int i = 0; i < paylines.symbols.Count; i++)
         {
-            if (paylines.symbols[i].Name == "FreeSpin")
+            if (paylines.symbols[i].name == "FreeSpin")
             {
                 if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
             }
-            if (paylines.symbols[i].Name == "Scatter")
+            if (paylines.symbols[i].name == "Scatter")
             {
                 if (Scatter_Text) Scatter_Text.text = paylines.symbols[i].description.ToString();
             }
         }
 
-        for(int i=0;i<_socketManager.initialData.daimondMultipliers.Count;i++){
-            DaimondMultiplier DM = _socketManager.initialData.daimondMultipliers[i];
-            numberOfDiamonds_Text.text += DM.range[0].ToString()+"-"+DM.range[1].ToString();
+        for (int i = 0; i < _socketManager.features.freeSpin.diamondMultiplier.Count; i++)
+        {
+            DiamondMultiplier DM = _socketManager.features.freeSpin.diamondMultiplier[i];
+            numberOfDiamonds_Text.text += DM.range[0].ToString() + "-" + DM.range[1].ToString();
             numberOfDiamonds_Text.text += "\n";
-            multiplier_Text.text +=  DM.multiplier.ToString();
-            multiplier_Text.text +=  "\n";
+            multiplier_Text.text += DM.multiplier.ToString();
+            multiplier_Text.text += "\n";
         }
     }
 

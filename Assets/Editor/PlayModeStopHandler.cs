@@ -29,7 +29,7 @@ public static class PlayModeStopHandler
             var targetScript = targetObject.GetComponent<SocketIOManager>(); // Replace with your actual script name
             if (targetScript != null)
             {
-                targetScript.CloseSocket(); // Call your desired method
+                // targetScript.CloseSocket(); // Call your desired method
             }
             else
             {
