@@ -611,18 +611,35 @@ public class SlotBehaviour : MonoBehaviour
   internal void CheckWinPopups()
   {
     _checkPopups = true;
-    if (_socketManager.resultData.payload != null &&
-        _socketManager.resultData.payload.wins != null &&
-        _socketManager.resultData.payload.wins.Count > 0)
+
+    if (_socketManager.resultData.payload.wins.Count > 0)
     {
-      double payout = 0;
-      foreach (var win in _socketManager.resultData.payload.wins)
+      bool usedScatter = false;
+      foreach (Win Win in _socketManager.resultData.payload.wins)
       {
-        payout += win.amount;
+        if (Win.usedScatter)
+        {
+          usedScatter = true;
+          break;
+        }
       }
-      _uiManager.PopulateWin(4, payout);
+
+      if (usedScatter)
+      {
+        double ScatterAmount = 0;
+        foreach (Win Win in _socketManager.resultData.payload.wins)
+        {
+          if (Win.usedScatter)
+          {
+            ScatterAmount += Win.amount;
+          }
+        }
+
+        _uiManager.PopulateWin(4, ScatterAmount);
+        return;
+      }
     }
-    else
+
     if (_socketManager.resultData.payload.winAmount >= _currentTotalBet * 5 && _socketManager.resultData.payload.winAmount < _currentTotalBet * 10)
     {
       _uiManager.PopulateWin(1, _socketManager.resultData.payload.winAmount);
@@ -682,7 +699,7 @@ public class SlotBehaviour : MonoBehaviour
         _diamondImages[win.line].DOFade(1f, 0.1f);
       }
 
-      yield return new WaitForSeconds(2f);
+      yield return new WaitForSeconds(0.5f);
 
       _loopLinesCoroutine = StartCoroutine(LineLoop(wins));
 
