@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
     [Header("Disconnection Popup UI References")]
     [SerializeField] private Button CloseDisconnect_Button;
     [SerializeField] private GameObject DisconnectPopup_Object;
-    
+
     [Header("Reconnection Popup")]
     [SerializeField] private GameObject ReconnectPopup_Object;
 
@@ -465,12 +465,9 @@ public class UIManager : MonoBehaviour
 
     private void CallOnExitFunction()
     {
-        if (!isExit)
-        {
-            isExit = true;
-            _audioController.PlayButtonAudio();
-            StartCoroutine(_socketManager.CloseSocket());
-        }
+        isExit = true;
+        _audioController.PlayButtonAudio();
+        StartCoroutine(_socketManager.CloseSocket());
     }
 
     private void OpenPopup(GameObject Popup)
