@@ -293,6 +293,7 @@ public class SlotBehaviour : MonoBehaviour
     _currentTotalBet = _socketManager.initialData.bets[_betCounter] * _lines;
     _currentLineBet = _socketManager.initialData.bets[_betCounter];
     populateLineBetOnDiamonds(_currentLineBet);
+    _uiManager.InitialiseUIData(_socketManager.initUIData.paylines);
 
   }
 
