@@ -31,10 +31,8 @@ public class SocketIOManager : MonoBehaviour
   internal Features features = null;
   internal Root resultData = null;
   internal Player playerdata = null;
-  // internal List<string> bonusdata = null;
   internal bool isResultdone = false;
   internal bool SetInit = false;
-  // private bool exited;
 
   [Header("Extras")]
   [SerializeField] private GameObject RaycastBlocker;
@@ -148,7 +146,6 @@ public class SocketIOManager : MonoBehaviour
     }
     // Set subscriptions
     gameSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
-    // gameSocket.On<string>(SocketIOEventTypes.Disconnect, OnDisconnected);
     gameSocket.On(SocketIOEventTypes.Disconnect, OnDisconnected); //Back2 Start
     gameSocket.On<Error>(SocketIOEventTypes.Error, OnError);
     gameSocket.On<string>("game:init", OnListenEvent);
@@ -169,7 +166,7 @@ public class SocketIOManager : MonoBehaviour
 
     if (hasEverConnected)
     {
-      // _uiManager.CheckAndClosePopups();
+      _uiManager.CheckAndClosePopups();
     }
 
     isConnected = true;
@@ -255,7 +252,7 @@ public class SocketIOManager : MonoBehaviour
 
       if (missedPongs == 0)
       {
-        // _uiManager.CheckAndClosePopups();
+        _uiManager.CheckAndClosePopups();
       }
 
       // If waiting for pong, and timeout passed
@@ -263,7 +260,7 @@ public class SocketIOManager : MonoBehaviour
       {
         if (missedPongs == 2)
         {
-          // _uiManager.ReconnectionPopup();
+          _uiManager.ReconnectionPopup();
         }
         missedPongs++;
         Debug.LogWarning($"⚠️ Pong missed #{missedPongs}/{MaxMissedPongs}");
@@ -334,18 +331,6 @@ public class SocketIOManager : MonoBehaviour
 #endif
   } //Back2 end
 
-  //   IEnumerator WaitAndExit()                         //////////////
-  //   {
-  //     yield return new WaitForSeconds(2f);
-  //     if (!exited)
-  //     {
-  //       exited = true;
-  // #if UNITY_WEBGL && !UNITY_EDITOR
-  //       JSManager.SendCustomMessage("onExit");
-  // #endif
-  //     }
-  //   }
-
   private void ParseResponse(string jsonObject)
   {
     Debug.Log(jsonObject);
@@ -362,7 +347,7 @@ public class SocketIOManager : MonoBehaviour
           initialData = myData.gameData;
           initUIData = myData.uiData;
           features = myData.features;
-          // bonusdata = myData.message.BonusData;
+
           if (!SetInit)
           {
             SetInit = true;
@@ -383,7 +368,6 @@ public class SocketIOManager : MonoBehaviour
         }
       case "ExitUser":
         {
-          // gameSocket.Disconnect();
           if (this.manager != null)
           {
             Debug.Log("Dispose my Socket");

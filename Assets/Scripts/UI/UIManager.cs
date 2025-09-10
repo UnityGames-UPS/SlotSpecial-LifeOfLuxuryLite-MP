@@ -58,6 +58,9 @@ public class UIManager : MonoBehaviour
     [Header("Disconnection Popup UI References")]
     [SerializeField] private Button CloseDisconnect_Button;
     [SerializeField] private GameObject DisconnectPopup_Object;
+    
+    [Header("Reconnection Popup")]
+    [SerializeField] private GameObject ReconnectPopup_Object;
 
     [Header("AnotherDevice Popup UI References")]
     [SerializeField] private Button CloseAD_Button;
@@ -247,6 +250,10 @@ public class UIManager : MonoBehaviour
             isExit = true;
             OpenPopup(DisconnectPopup_Object);
         }
+    }
+    internal void ReconnectionPopup()
+    {
+        OpenPopup(ReconnectPopup_Object);
     }
 
     internal void PopulateWin(int value, double amount)
@@ -465,7 +472,7 @@ public class UIManager : MonoBehaviour
             StartCoroutine(_socketManager.CloseSocket());
         }
     }
-    
+
     private void OpenPopup(GameObject Popup)
     {
         if (_audioController) _audioController.PlayButtonAudio();
@@ -480,6 +487,18 @@ public class UIManager : MonoBehaviour
         if (!DisconnectPopup_Object.activeSelf)
         {
             if (MainPopup_Object) MainPopup_Object.SetActive(false);
+        }
+    }
+
+    internal void CheckAndClosePopups()
+    {
+        if (ReconnectPopup_Object.activeInHierarchy)
+        {
+            ClosePopup(ReconnectPopup_Object);
+        }
+        if (DisconnectPopup_Object.activeInHierarchy)
+        {
+            ClosePopup(DisconnectPopup_Object);
         }
     }
 
