@@ -248,6 +248,8 @@ public class SlotBehaviour : MonoBehaviour
       // _uiManager.OpenFSTotalWin(_socketManager.resultData.payload.winAmount);
       _uiManager.OpenFSTotalWin(totalFSwin);
       yield return new WaitUntil(() => !_checkPopups);
+      _totalWinText.text = _socketManager.resultData.freeSpinAccBalance.ToString("F3");
+      yield return new WaitForSeconds(0.5f);
     }
     if (_wasAutoSpinOn)
     {
