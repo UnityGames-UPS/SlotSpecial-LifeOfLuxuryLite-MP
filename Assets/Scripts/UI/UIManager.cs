@@ -453,6 +453,8 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        numberOfDiamonds_Text.text = null;
+        multiplier_Text.text = null;
         for (int i = 0; i < _socketManager.features.freeSpin.diamondMultiplier.Count; i++)
         {
             DiamondMultiplier DM = _socketManager.features.freeSpin.diamondMultiplier[i];
