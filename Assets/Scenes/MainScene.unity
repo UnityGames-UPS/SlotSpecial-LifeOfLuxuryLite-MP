@@ -6222,7 +6222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c6dee67c9fb64b7bbed44da112a7af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestToken: b3f67faf14fa4a6c994617488d4ddfc3
+  TestToken: f590b04613b34c5b82a83947ee89b677
   _slotBehaviour: {fileID: 2046803210}
   _uiManager: {fileID: 377874625}
   JSManager: {fileID: 1148238420}
@@ -8838,7 +8838,7 @@ MonoBehaviour:
   CanvasScaler: {fileID: 51930702}
   MatchWidth: 0
   MatchHeight: 1
-  PortraitMatchWandH: 0.5
+  PortraitMatchWandH: 0.47
   transitionDuration: 0.2
   waitForRotation: 0.2
 --- !u!4 &675335794
@@ -22990,7 +22990,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -870, y: -453}
+  m_AnchoredPosition: {x: -845, y: 34}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1766118715
@@ -27608,7 +27608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -997, y: -449}
+  m_AnchoredPosition: {x: -845, y: -97.869965}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2116257430
